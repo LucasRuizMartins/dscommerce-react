@@ -2,11 +2,12 @@ import "./styles.css";
 import ButtonInverse from "../../../components/ButtonInverse";
 import ButtonPrimary from "../../../components/ButtonPrimary";
 import ProductDetailsCard from "../../../components/ProductDetailsCard";
-import * as productService from "../../../services/product-service";
 import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ProductDTO } from "../../../models/product";
+import * as productService from "../../../services/product-service";
+import * as cartService from "../../../services/cart-service";
 
 export default function ProductDetails() {
   const params = useParams();
@@ -27,16 +28,22 @@ export default function ProductDetails() {
       });
   }, []);
 
+  function handleByClick() {
+    if (product) {
+      cartService.addProduct(product);
+      navigate("/cart");
+    }
+  }
+
   return (
     <main>
       <section id="product-details-section" className="dsc-container">
-       
         {product && <ProductDetailsCard product={product} />}
 
         <div className="dsc-btn-page-container">
-          <ButtonPrimary nameButton="COMPRAR" />
-    
-          
+          <div onClick={handleByClick}>
+            <ButtonPrimary nameButton="COMPRAR" />
+          </div>
           <Link to="/">
             <ButtonInverse nameButton="INICIO" />
           </Link>
