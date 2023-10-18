@@ -36,7 +36,7 @@ export default function Catalog() {
       .then((response) => {
         const nextPage = response.data.content;
         setProducts(products.concat(nextPage));
-        setIsLastPage(response.data.last)
+        setIsLastPage(response.data.isLastPage)
       });
   }, [queryParams]);
 
