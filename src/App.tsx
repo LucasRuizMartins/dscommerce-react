@@ -6,6 +6,8 @@ import Cart from "./routes/ClientHome/Cart";
 import { useState } from "react";
 import { ContextCartCount } from "./services/context-cart";
 import Login from "./routes/ClientHome/Login";
+import Admin from "./routes/Admin";
+import AdminHome from "./routes/Admin/AdminHome";
 
 export default function App() {
   const [contextCartCount, setContextCartCount] = useState<number>(0);
@@ -25,6 +27,9 @@ export default function App() {
             ></Route>
             <Route path="cart" element={<Cart />}></Route>
             <Route path="login" element={<Login />}></Route>
+          </Route>
+          <Route path="/admin/" element={<Admin />}>
+            <Route index element={<AdminHome />} />
           </Route>
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

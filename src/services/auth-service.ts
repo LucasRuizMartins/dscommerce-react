@@ -3,6 +3,7 @@ import { CredentialsDTO } from "../models/auth";
 import { CLIENT_ID, CLIENT_SECRET } from "../utils/system";
 import { AxiosRequestConfig } from "axios";
 import { requestBackend } from "../utils/requests";
+import * as acesstokenRepository from "../localStorage/acess-token-repository";
 
 export function loginRequest(loginData: CredentialsDTO) {
   const headers = {
@@ -23,6 +24,16 @@ export function loginRequest(loginData: CredentialsDTO) {
   };
 
   return requestBackend(config);
+}
 
+export function logout() {
+  acesstokenRepository.remove();
+}
 
+export function saveAcessToken(token: string) {
+  acesstokenRepository.save(token);
+}
+
+export function getAcessToken() {
+  acesstokenRepository.get();
 }
