@@ -13,6 +13,7 @@ export function requestBackend(config: AxiosRequestConfig) {
   return axios({ ...config, baseURL: BASE_URL, headers });
 }
 
+//REDIRECIONAMENTO DE LINK --
 // REQUEST INTERCEPTOR
 axios.interceptors.request.use(
   function (config) {
@@ -43,3 +44,4 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+//-- REDIRECIONAMENTO DE LINK --

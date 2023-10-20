@@ -24,7 +24,7 @@ export default function Login() {
       .loginRequest(formData)
       .then((response) => {
         authService.saveAcessToken(response.data.access_token);
-        console.log(response.data);
+        console.log(authService.getAccessTokenPayload()?.exp);
       })
       .catch((error) => {
         console.log("Error no login", error);
