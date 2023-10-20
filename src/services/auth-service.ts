@@ -53,5 +53,6 @@ export function getAccessTokenPayload(): AccessTokenPayloadDTO | undefined {
 }
 export function isAuthenticated(): boolean {
   let tokenPayload = getAccessTokenPayload();
+  // o instante do javascript é 1000 vezes maior que o padrão utilizado pelo token, por isso a multiplicação.
   return tokenPayload && tokenPayload.exp * 1000 > Date.now() ? true : false;
 }
