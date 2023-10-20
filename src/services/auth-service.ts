@@ -35,5 +35,5 @@ export function saveAcessToken(token: string) {
 }
 
 export function getAcessToken() {
- return acesstokenRepository.get();
+  return acesstokenRepository.get();
 }
