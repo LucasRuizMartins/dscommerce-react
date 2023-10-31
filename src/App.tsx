@@ -19,6 +19,7 @@ import { AccessTokenPayloadDTO } from "./models/auth";
 import { ContextToken } from "./services/context-toke";
 import * as authService from "./services/auth-service";
 import * as cartService from './services/cart-service'
+import Confirmation from "./routes/ClientHome/Confirmation";
 
 export default function App() {
   const [contextCartCount, setContextCartCount] = useState<number>(0);
@@ -34,6 +35,8 @@ export default function App() {
     }
   }, []);
 
+ 
+
   return (
     <ContextToken.Provider
       value={{ contextTokenPayload, setContextTokenPayload }}
@@ -46,13 +49,11 @@ export default function App() {
             <Route path="/" element={<ClientHome />}>
               <Route index element={<Catalog />} />
               <Route path="catalog" element={<Catalog />}></Route>
-              <Route
-                path="product-details/:productId"
-                element={<ProductDetails />}
-              ></Route>
+              <Route path="product-details/:productId" element={<ProductDetails />} ></Route>
               <Route path="cart" element={<Cart />}></Route>
               <Route path="login" element={<Login />}></Route>
             </Route>
+            <Route path="confirmation/:orderId" element={<Confirmation />} ></Route>
             <Route
               path="/admin/"
               element={
