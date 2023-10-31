@@ -8,6 +8,7 @@ import { ContextToken } from "../../services/context-toke";
 import LoggedUser from "../LoggedUser";
 
 export default function HeaderClient() {
+  
   const { contextTokenPayload } = useContext(ContextToken);
 
   return (

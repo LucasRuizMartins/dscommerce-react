@@ -18,7 +18,7 @@ import { PrivateRoute } from "./components/PrivateRoute";
 import { AccessTokenPayloadDTO } from "./models/auth";
 import { ContextToken } from "./services/context-toke";
 import * as authService from "./services/auth-service";
-import * as cartService from './services/cart-service'
+import * as cartService from "./services/cart-service";
 import Confirmation from "./routes/ClientHome/Confirmation";
 
 export default function App() {
@@ -27,15 +27,13 @@ export default function App() {
     useState<AccessTokenPayloadDTO>();
 
   useEffect(() => {
-      setContextCartCount(cartService.getCart().items.length)
+    setContextCartCount(cartService.getCart().items.length);
 
     if (authService.isAuthenticated()) {
       const payload = authService.getAccessTokenPayload();
       setContextTokenPayload(payload);
     }
   }, []);
-
- 
 
   return (
     <ContextToken.Provider
@@ -49,11 +47,23 @@ export default function App() {
             <Route path="/" element={<ClientHome />}>
               <Route index element={<Catalog />} />
               <Route path="catalog" element={<Catalog />}></Route>
-              <Route path="product-details/:productId" element={<ProductDetails />} ></Route>
+              <Route
+                path="product-details/:productId"
+                element={<ProductDetails />}
+              ></Route>
               <Route path="cart" element={<Cart />}></Route>
               <Route path="login" element={<Login />}></Route>
+
+              <Route
+                path="confirmation/:orderId"
+                element={
+                  <PrivateRoute>
+       
+                    <Confirmation />{" "}
+                  </PrivateRoute>
+                }
+              ></Route>
             </Route>
-            <Route path="confirmation/:orderId" element={<Confirmation />} ></Route>
             <Route
               path="/admin/"
               element={
