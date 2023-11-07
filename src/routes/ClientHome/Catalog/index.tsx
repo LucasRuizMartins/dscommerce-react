@@ -30,7 +30,7 @@ export default function Catalog() {
   useEffect(() => {
     //localStorage.setItem("minhaCategoria", JSON.stringify(objTest))
 
-    console.log("AUTENTICADO", isAuthenticated())
+    console.log("AUTENTICADO", isAuthenticated());
     const obj = JSON.parse(localStorage.getItem("minhaCategoria") || "{}");
     console.log(obj.name);
 
@@ -39,7 +39,7 @@ export default function Catalog() {
       .then((response) => {
         const nextPage = response.data.content;
         setProducts(products.concat(nextPage));
-        setIsLastPage(response.data.isLastPage)
+        setIsLastPage(response.data.last);
       });
   }, [queryParams]);
 
@@ -60,9 +60,10 @@ export default function Catalog() {
         </div>
 
         {!isLastPage && (
-          <div onClick={handleNextPageClick}>
-            <ButtonNextPage nameButton="CARREGAR MAIS" />
-          </div>
+          <ButtonNextPage
+            nameButton="CARREGAR MAIS"
+            onNextPage={handleNextPageClick}
+          />
         )}
       </section>
     </main>

@@ -1,68 +1,115 @@
-import "./styles.css"
-import editIcon from "../../../assets/edit.svg"
-import deleteIcon from "../../../assets/delete.svg"
-import pcIcon from "../../../assets/computer.png"
+import "./styles.css";
+import editIcon from "../../../assets/edit.svg";
+import deleteIcon from "../../../assets/delete.svg";
 
+import { useEffect, useState } from "react";
+import { isAuthenticated } from "../../../services/auth-service";
+import * as productService from "../../../services/product-service";
+import { ProductDTO } from "../../../models/product";
+import SearchBar from "../../../components/SearchBar";
+import ButtonNextPage from "../../../components/ButtonNextPage";
+
+type QueryParams = {
+  page: number;
+  name: string;
+};
 
 export default function ProductListing() {
-    return (
 
-        <main>
-        <section id="product-listing-section" className="dsc-container">
-          <h2 className="dsc-section-title dsc-mb20">Cadastro de produtos</h2>
-  
-          <div className="dsc-btn-page-container dsc-mb20">
-            <div className="dsc-btn dsc-btn-white">Novo</div>
-          </div>
-  
-          <form className="dsc-search-bar">
-            <button type="submit">🔎︎</button>
-            <input type="text" placeholder="Nome do produto" />
-            <button type="reset">🗙</button>
-          </form>
-  
-          <table className="dsc-table dsc-mb20 dsc-mt20">
-            <thead>
-              <tr>
-                <th className="dsc-tb576">ID</th>
-                <th></th>
-                <th className="dsc-tb768">Preço</th>
-                <th className="dsc-txt-left">Nome</th>
-                <th></th>
-                <th></th>  
+const [isLastPage,setIsLastPage] = useState(false);
+
+  const [queryParams, setQueryParams] = useState<QueryParams>({
+    page: 0,
+    name: "",
+  });
+
+
+  const [products, setProducts] = useState<ProductDTO[]>([]);
+
+  useEffect(() => {
+    console.log("AUTENTICADO", isAuthenticated());
+    const obj = JSON.parse(localStorage.getItem("minhaCategoria") || "{}");
+    console.log(obj.name);
+
+    productService
+      .findPageRequest(queryParams.page, queryParams.name)
+      .then((response) => {
+        const nextPage = response.data.content;
+        setProducts(products.concat(nextPage));
+        setIsLastPage(response.data.last);
+      });
+  }, [queryParams]);
+
+  function handleSearch(searchText: string) {
+    setProducts([]); //esvaziar a lista ao fazer uma busca Nova
+    setQueryParams({ ...queryParams, page: 0, name: searchText });
+  }
+
+  function handleNextPageClick() {
+    setQueryParams({ ...queryParams, page: queryParams.page + 1 });
+  }
+
+  return (
+    <main>
+      <section id="product-listing-section" className="dsc-container">
+        <h2 className="dsc-section-title dsc-mb20">Cadastro de produtos</h2>
+
+        <div className="dsc-btn-page-container dsc-mb20">
+          <div className="dsc-btn dsc-btn-white">Novo</div>
+        </div>
+
+        <SearchBar onSearch={handleSearch} />
+
+        <table className="dsc-table dsc-mb20 dsc-mt20">
+          <thead>
+            <tr>
+              <th className="dsc-tb576">ID</th>
+              <th></th>
+              <th className="dsc-tb768">Preço</th>
+              <th className="dsc-txt-left">Nome</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map((product) => (
+              <tr key={product.id}>
+                <td className="dsc-tb576">{product.id}</td>
+                <td>
+                  <img
+                    className="dsc-product-listing-image"
+                    src={product.imgUrl}
+                    alt={product.name}
+                  />
+                </td>
+                <td className="dsc-tb768">{product.price.toFixed(2)}</td>
+                <td className="dsc-txt-left">{product.name}</td>
+                <td>
+                  <img
+                    className="dsc-product-listing-btn"
+                    src={editIcon}
+                    alt="Editar"
+                  />
+                </td>
+                <td>
+                  <img
+                    className="dsc-product-listing-btn"
+                    src={deleteIcon}
+                    alt="Deletar"
+                  />
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="dsc-tb576">341</td>
-                <td><img className="dsc-product-listing-image" src={pcIcon} alt="Computer"/></td>
-                <td className="dsc-tb768">R$ 5000,00</td>
-                <td className="dsc-txt-left">Computador Gamer XT Plus Ultra</td>
-                <td><img className="dsc-product-listing-btn" src={editIcon} alt="Editar" /></td>
-                <td><img className="dsc-product-listing-btn" src={deleteIcon} alt="Deletar" /></td>
-              </tr>
-              <tr>
-                <td className="dsc-tb576">341</td>
-                <td><img className="dsc-product-listing-image" src={pcIcon} alt="Computer"/></td>
-                <td className="dsc-tb768">R$ 5000,00</td>
-                <td className="dsc-txt-left">Computador Gamer XT Plus Ultra</td>
-                <td><img className="dsc-product-listing-btn" src={editIcon} alt="Editar" /></td>
-                <td><img className="dsc-product-listing-btn" src={deleteIcon} alt="Deletar" /></td>
-              </tr>
-              <tr>
-                <td className="dsc-tb576">341</td>
-                <td><img className="dsc-product-listing-image" src={pcIcon} alt="Computer" /></td>
-                <td className="dsc-tb768">R$ 5000,00</td>
-                <td className="dsc-txt-left">Computador Gamer XT Plus Ultra</td>
-                <td><img className="dsc-product-listing-btn" src={editIcon} alt="Editar" /></td>
-                <td><img className="dsc-product-listing-btn" src={deleteIcon} alt="Deletar" /></td>
-              </tr>
-  
-            </tbody>
-          </table>
-  
-          <div className="dsc-btn-next-page">Carregar mais</div>
-        </section>
-      </main>
-    )
+            ))}
+          </tbody>
+        </table>
+        
+        {!isLastPage && 
+          <ButtonNextPage
+            nameButton={"Mais Produtos"}
+            onNextPage={handleNextPageClick}
+          />
+        }
+      </section>
+    </main>
+  );
 }
