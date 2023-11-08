@@ -8,6 +8,7 @@ import * as productService from "../../../services/product-service";
 import { ProductDTO } from "../../../models/product";
 import SearchBar from "../../../components/SearchBar";
 import ButtonNextPage from "../../../components/ButtonNextPage";
+import DialogInfo from "../../../components/DialogInfo";
 
 type QueryParams = {
   page: number;
@@ -15,14 +16,17 @@ type QueryParams = {
 };
 
 export default function ProductListing() {
+  const [dialogInfoData, setDialogInfoData] = useState({
+    visible: false,
+    message: "Operação realizada com Sucesso !",
+  });
 
-const [isLastPage,setIsLastPage] = useState(false);
+  const [isLastPage, setIsLastPage] = useState(false);
 
   const [queryParams, setQueryParams] = useState<QueryParams>({
     page: 0,
     name: "",
   });
-
 
   const [products, setProducts] = useState<ProductDTO[]>([]);
 
@@ -47,6 +51,14 @@ const [isLastPage,setIsLastPage] = useState(false);
 
   function handleNextPageClick() {
     setQueryParams({ ...queryParams, page: queryParams.page + 1 });
+  }
+
+  function handleDialogInfoClose() {
+    setDialogInfoData({ ...dialogInfoData, visible: false });
+  }
+
+  function handleDeleteClick(){
+    setDialogInfoData({ ...dialogInfoData, visible: true });
   }
 
   return (
@@ -93,6 +105,7 @@ const [isLastPage,setIsLastPage] = useState(false);
                 </td>
                 <td>
                   <img
+                    onClick={handleDeleteClick}
                     className="dsc-product-listing-btn"
                     src={deleteIcon}
                     alt="Deletar"
@@ -102,14 +115,21 @@ const [isLastPage,setIsLastPage] = useState(false);
             ))}
           </tbody>
         </table>
-        
-        {!isLastPage && 
+
+        {!isLastPage && (
           <ButtonNextPage
             nameButton={"Mais Produtos"}
             onNextPage={handleNextPageClick}
           />
-        }
+        )}
       </section>
+
+      {dialogInfoData.visible && (
+        <DialogInfo
+          message={dialogInfoData.message}
+          onDialogClose={handleDialogInfoClose}
+        />
+      )}
     </main>
   );
 }
