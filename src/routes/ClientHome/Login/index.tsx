@@ -44,10 +44,7 @@ export default function Login() {
     event.preventDefault();
 
     authService
-      .loginRequest({
-        username: formData.username.value,
-        password: formData.password.value,
-      })
+      .loginRequest(forms.toValues(formData))
       .then((response) => {
         authService.saveAcessToken(response.data.access_token);
         setContextTokenPayload(authService.getAccessTokenPayload());
