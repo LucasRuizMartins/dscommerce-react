@@ -18,3 +18,14 @@ export function updateAll(inputs: any, newValues: any) {
   }
   return newInputs;
 }
+
+export function validate(inputs: any, name: string) {
+  //verificar se existe o campo validation nos inputs
+  if (!inputs[name].validation) {
+    return inputs;
+  }
+  const isInvalid = !inputs[name].validation(inputs[name].value);
+  //atribuir valor ao validation dos inputs
+  return {...inputs, [name]: { ...inputs[name], invalid: isInvalid.toString() },
+  };
+}
