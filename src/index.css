@@ -243,7 +243,7 @@ nav a {
   color: var(--dsc-color-font-placeholder);
 }
 
-.dsc-input-error {
+.dsc-form-control[data-invalid="true"] {
   border: 1px solid var(--dsc-color-error);
 }
 
@@ -251,6 +251,10 @@ nav a {
   color: var(--dsc-color-error);
   font-size: 12px;
   padding-left: 4px;
+  display: none;
+}
+.dsc-form-control[data-invalid="true"] ~ div {
+  display: unset;
 }
 
 .dsc-select:invalid {
@@ -400,9 +404,8 @@ nav a {
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-gap: 15px
+  grid-gap: 15px;
 }
 .dsc-dialog-btn {
   width: 100%;
- 
 }

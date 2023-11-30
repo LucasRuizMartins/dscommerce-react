@@ -1,11 +1,5 @@
-
-
-
 export default function FormInput(props: any) {
+  const { validation, invalid, ...inputProps } = props;
 
-    const {validation,...inputProps} = props;
-
-    return(
-        <input {...inputProps} />
-    )
+  return <input {...inputProps} data-invalid={invalid} />;
 }
