@@ -48,8 +48,13 @@ export default function ProductForm() {
 
     setFormData(dataValidated);
   }
-
+function handleTurnDurty( name: string) {
+  const newFormData = forms.toDirty(formData, name);
+  setFormData (newFormData)
+}
   useEffect(() => {
+    const result = forms.toDirty(formData,"price");
+    console.log(result)
     const obj = forms.validate(formData, "price");
 
     if (isEditing) {
@@ -71,6 +76,7 @@ export default function ProductForm() {
               <FormInput
                 {...formData.name}
                 className="dsc-form-control"
+                onTurnDirty={handleTurnDurty}
                 onChange={handleInputChange}
               />
               <div className="dsc-form-error">{formData.name.message}</div>
@@ -80,6 +86,7 @@ export default function ProductForm() {
               <FormInput
                 {...formData.price}
                 className="dsc-form-control"
+                onTurnDirty={handleTurnDurty}
                 onChange={handleInputChange}
               />
               <div className="dsc-form-error">{formData.price.message}</div>
@@ -90,6 +97,7 @@ export default function ProductForm() {
                 {...formData.imgUrl}
                 className="dsc-form-control"
                 onChange={handleInputChange}
+                onTurnDirty={handleTurnDurty}
               />
             </div>
 
