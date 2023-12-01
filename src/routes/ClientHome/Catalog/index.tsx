@@ -30,9 +30,7 @@ export default function Catalog() {
   useEffect(() => {
     //localStorage.setItem("minhaCategoria", JSON.stringify(objTest))
 
-    console.log("AUTENTICADO", isAuthenticated());
     const obj = JSON.parse(localStorage.getItem("minhaCategoria") || "{}");
-    console.log(obj.name);
 
     productService
       .findPageRequest(queryParams.page, queryParams.name)
