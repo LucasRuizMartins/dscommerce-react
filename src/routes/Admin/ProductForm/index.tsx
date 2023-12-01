@@ -4,12 +4,17 @@ import { useEffect, useState } from "react";
 import FormInput from "../../../components/FormInput";
 import * as forms from "../../../utils/forms";
 import * as productService from "../../../services/product-service";
+import * as categoryService from "../../../services/category-service";
 import FormTextArea from "../../../components/FormTextArea";
+import { CategoryDTO } from "../../../models/category";
+import FormSelect from "../../../components/FormSelect";
 
 export default function ProductForm() {
   const params = useParams();
 
   const isEditing = params.productId !== "create";
+
+  const [categories, setCategories] = useState<CategoryDTO[]>([]);
 
   const [formData, setFormData] = useState<any>({
     name: {
@@ -52,6 +57,16 @@ export default function ProductForm() {
       },
       message: "Mínimo 10 caracteres",
     },
+    categories: {
+      value: [],
+      id: "categories",
+      name: "categories",
+      placeholder: "Categorias",
+      validation: function (value: CategoryDTO[]) {
+        return value.length > 0;
+      },
+      message: "Escolha ao menos 1 categoria",
+    },
   });
 
   function handleInputChange(event: any) {
@@ -67,6 +82,12 @@ export default function ProductForm() {
     const newFormData = forms.dirtyAndValidate(formData, name);
     setFormData(newFormData);
   }
+
+  useEffect(() => {
+    categoryService.findAllRequest().then((response) => {
+      setCategories(response.data);
+    });
+  }, []);
 
   useEffect(() => {
     if (isEditing) {
@@ -113,6 +134,29 @@ export default function ProductForm() {
               />
             </div>
 
+            <div className="dsc-form-controls-container">
+              <FormSelect
+                {...formData.categories}
+                className="dsc-form-control"
+                options={categories}
+                onChange={(obj: any) => {
+                  const newFormData = forms.updateAndValidate(
+                    formData,
+                    "categories",
+                    obj
+                  );
+                  setFormData(newFormData);
+                }}
+                onTurnDirty={handleTurnDurty}
+                isMulti
+                getOptionLabel={(obj) => obj.name}
+                getOptionValue={(obj) => String(obj.id)}
+              />
+              <div className="dsc-form-error">
+                {formData.categories.message}
+              </div>
+            </div>
+
             <div className="dsc-form-controls-container ">
               <FormTextArea
                 {...formData.description}
@@ -120,7 +164,9 @@ export default function ProductForm() {
                 onTurnDirty={handleTurnDurty}
                 onChange={handleInputChange}
               />
-              <div className="dsc-form-error ">{formData.description.message}</div>
+              <div className="dsc-form-error ">
+                {formData.description.message}
+              </div>
             </div>
 
             <div className="dsc-product-form-buttons">
