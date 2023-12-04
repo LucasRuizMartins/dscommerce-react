@@ -19,7 +19,6 @@ type QueryParams = {
 };
 
 export default function ProductListing() {
-
   const navigate = useNavigate();
   const [dialogInfoData, setDialogInfoData] = useState({
     visible: false,
@@ -53,12 +52,9 @@ export default function ProductListing() {
       });
   }, [queryParams]);
 
-
   function handleNewProductClick() {
-    navigate("/admin/products/create")
+    navigate("/admin/products/create");
   }
-
-  
 
   function handleSearch(searchText: string) {
     setProducts([]); //esvaziar a lista ao fazer uma busca Nova
@@ -71,6 +67,11 @@ export default function ProductListing() {
 
   function handleDialogInfoClose() {
     setDialogInfoData({ ...dialogInfoData, visible: false });
+  }
+
+  function handleUpdateClick(productId:number) {
+    navigate(`/admin/products/${productId}`)
+
   }
 
   function handleDeleteClick(productId: number) {
@@ -138,6 +139,7 @@ export default function ProductListing() {
                 <td className="dsc-txt-left">{product.name}</td>
                 <td>
                   <img
+                    onClick={()=> handleUpdateClick(product.id)}
                     className="dsc-product-listing-btn"
                     src={editIcon}
                     alt="Editar"

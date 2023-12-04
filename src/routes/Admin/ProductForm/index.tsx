@@ -79,6 +79,16 @@ export default function ProductForm() {
     setFormData(result);
   }
 
+  function handleSubmit(event: any) {
+    event.preventDefault();
+    const formDataValidated = forms.dirtyAndValidateAll(formData); 
+    if (forms.hasAnyInvalid(formDataValidated)) {
+      setFormData(formDataValidated)
+      return;
+    }
+    
+  }
+
   function handleTurnDurty(name: string) {
     const newFormData = forms.dirtyAndValidate(formData, name);
     setFormData(newFormData);
@@ -103,7 +113,7 @@ export default function ProductForm() {
     <main>
       <section id="product-form-section" className="dsc-container">
         <div className="dsc-product-form-container">
-          <form className="dsc-card dsc-form">
+          <form className="dsc-card dsc-form" onSubmit={handleSubmit}>
             <h2>Dados do produto</h2>
 
             <div className="dsc-form-controls-container">
@@ -140,7 +150,12 @@ export default function ProductForm() {
                 {...formData.categories}
                 className="dsc-form-control dsc-form-select-container"
                 options={categories}
-                onChange={(obj: any) => {const newFormData = forms.updateAndValidate(formData,"categories",obj);              
+                onChange={(obj: any) => {
+                  const newFormData = forms.updateAndValidate(
+                    formData,
+                    "categories",
+                    obj
+                  );
                   setFormData(newFormData);
                 }}
                 styles={selectStyles}
