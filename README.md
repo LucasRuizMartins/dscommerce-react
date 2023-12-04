@@ -45,8 +45,10 @@ Grade curricular do curso:
 # Sobre o Projeto
 
 
-[Projeto - Figma](/https://www.figma.com/file/ZrGNVNG0kZL6txDv4G8P6s/DSCommerce)
-[Documentos - Requisitos](/https://drive.google.com/drive/folders/1WTBggtq38cLeeQosPHjuhjSLxa94Lmx_)
+[Projeto - Figma](https://www.figma.com/file/ZrGNVNG0kZL6txDv4G8P6s/DSCommerce)
+
+
+[Documentos - Requisitos](https://drive.google.com/drive/folders/1WTBggtq38cLeeQosPHjuhjSLxa94Lmx_)
 
 O projeto foi pensado de com código limpo visando as boas praticas, todas as pastas foram separadas para uma melhor organização do código visando uma manutenção futura. 
 
