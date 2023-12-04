@@ -51,8 +51,6 @@ export function updateRequest(obj: ProductDTO) {
   return requestBackend(config);
 }
 
-
-
 export function insertRequest(obj: ProductDTO) {
   const config: AxiosRequestConfig = {
     method: "POST",
